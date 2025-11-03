@@ -14,6 +14,9 @@ npx cap sync
 <docgen-index>
 
 * [`echo(...)`](#echo)
+* [`initialize()`](#initialize)
+* [`startNavigation(...)`](#startnavigation)
+* [`stopNavigation()`](#stopnavigation)
 
 </docgen-index>
 
@@ -31,6 +34,43 @@ echo(options: { value: string; }) => Promise<{ value: string; }>
 | **`options`** | <code>{ value: string; }</code> |
 
 **Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+
+--------------------
+
+
+### initialize()
+
+```typescript
+initialize() => Promise<{ success: boolean; }>
+```
+
+**Returns:** <code>Promise&lt;{ success: boolean; }&gt;</code>
+
+--------------------
+
+
+### startNavigation(...)
+
+```typescript
+startNavigation(options: { lat: number; lng: number; }) => Promise<{ success: boolean; }>
+```
+
+| Param         | Type                                       |
+| ------------- | ------------------------------------------ |
+| **`options`** | <code>{ lat: number; lng: number; }</code> |
+
+**Returns:** <code>Promise&lt;{ success: boolean; }&gt;</code>
+
+--------------------
+
+
+### stopNavigation()
+
+```typescript
+stopNavigation() => Promise<{ success: boolean; }>
+```
+
+**Returns:** <code>Promise&lt;{ success: boolean; }&gt;</code>
 
 --------------------
 
