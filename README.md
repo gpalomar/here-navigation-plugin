@@ -14,9 +14,15 @@ npx cap sync
 <docgen-index>
 
 * [`echo(...)`](#echo)
-* [`initialize()`](#initialize)
+* [`initialize(...)`](#initialize)
 * [`startNavigation(...)`](#startnavigation)
 * [`stopNavigation()`](#stopnavigation)
+* [`isNavigating()`](#isnavigating)
+* [`isNavigationActive()`](#isnavigationactive)
+* [`getMapViewInfo()`](#getmapviewinfo)
+* [`showMap()`](#showmap)
+* [`hideMap()`](#hidemap)
+* [`showMapInContainer(...)`](#showmapincontainer)
 
 </docgen-index>
 
@@ -38,11 +44,15 @@ echo(options: { value: string; }) => Promise<{ value: string; }>
 --------------------
 
 
-### initialize()
+### initialize(...)
 
 ```typescript
-initialize() => Promise<{ success: boolean; }>
+initialize(options: { accessKeyId: string; accessKeySecret: string; }) => Promise<{ success: boolean; }>
 ```
+
+| Param         | Type                                                           |
+| ------------- | -------------------------------------------------------------- |
+| **`options`** | <code>{ accessKeyId: string; accessKeySecret: string; }</code> |
 
 **Returns:** <code>Promise&lt;{ success: boolean; }&gt;</code>
 
@@ -69,6 +79,76 @@ startNavigation(options: { lat: number; lng: number; }) => Promise<{ success: bo
 ```typescript
 stopNavigation() => Promise<{ success: boolean; }>
 ```
+
+**Returns:** <code>Promise&lt;{ success: boolean; }&gt;</code>
+
+--------------------
+
+
+### isNavigating()
+
+```typescript
+isNavigating() => Promise<{ isNavigating: boolean; }>
+```
+
+**Returns:** <code>Promise&lt;{ isNavigating: boolean; }&gt;</code>
+
+--------------------
+
+
+### isNavigationActive()
+
+```typescript
+isNavigationActive() => Promise<{ isActive: boolean; }>
+```
+
+**Returns:** <code>Promise&lt;{ isActive: boolean; }&gt;</code>
+
+--------------------
+
+
+### getMapViewInfo()
+
+```typescript
+getMapViewInfo() => Promise<{ hasMapView: boolean; isReady: boolean; }>
+```
+
+**Returns:** <code>Promise&lt;{ hasMapView: boolean; isReady: boolean; }&gt;</code>
+
+--------------------
+
+
+### showMap()
+
+```typescript
+showMap() => Promise<{ success: boolean; }>
+```
+
+**Returns:** <code>Promise&lt;{ success: boolean; }&gt;</code>
+
+--------------------
+
+
+### hideMap()
+
+```typescript
+hideMap() => Promise<{ success: boolean; }>
+```
+
+**Returns:** <code>Promise&lt;{ success: boolean; }&gt;</code>
+
+--------------------
+
+
+### showMapInContainer(...)
+
+```typescript
+showMapInContainer(options: { x: number; y: number; width: number; height: number; }) => Promise<{ success: boolean; }>
+```
+
+| Param         | Type                                                                  |
+| ------------- | --------------------------------------------------------------------- |
+| **`options`** | <code>{ x: number; y: number; width: number; height: number; }</code> |
 
 **Returns:** <code>Promise&lt;{ success: boolean; }&gt;</code>
 
