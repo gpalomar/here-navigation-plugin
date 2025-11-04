@@ -53,7 +53,15 @@ public class HereNavigationPluginPlugin extends Plugin {
     @PluginMethod
     public void initialize(PluginCall call) {
         try {
-            boolean success = implementation.initialize();
+            String accessKeyId = call.getString("accessKeyId");
+            String accessKeySecret = call.getString("accessKeySecret");
+            
+            if (accessKeyId == null || accessKeySecret == null) {
+                call.reject("Missing credentials", "accessKeyId and accessKeySecret are required");
+                return;
+            }
+            
+            boolean success = implementation.initialize(accessKeyId, accessKeySecret);
             JSObject ret = new JSObject();
             ret.put("success", success);
             call.resolve(ret);

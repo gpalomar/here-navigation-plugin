@@ -5,6 +5,9 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.app.Activity;
 import com.getcapacitor.Logger;
+import com.here.sdk.core.engine.AuthenticationMode;
+import com.here.sdk.core.engine.SDKOptions;
+import com.here.sdk.core.engine.SDKNativeEngine;
 import com.here.sdk.core.GeoCoordinates;
 import com.here.sdk.core.Location;
 import com.here.sdk.core.errors.InstantiationErrorException;
@@ -22,7 +25,6 @@ import com.here.sdk.routing.RoutingError;
 import com.here.sdk.routing.CarOptions;
 import com.here.sdk.routing.Waypoint;
 import com.here.sdk.routing.CalculateRouteCallback;
-import com.here.sdk.core.engine.SDKNativeEngine;
 
 import java.util.Arrays;
 import java.util.List;
@@ -67,7 +69,7 @@ public class HereNavigationService {
         
         // Set map scheme with detailed logging
         Logger.info("HereNavigationService", "Loading map scene with NORMAL_DAY scheme...");
-        mapView.getMapScene().loadScene(MapScheme.NORMAL_DAY, new MapScene.LoadSceneCallback() {
+        mapView.getMapScene().loadScene(MapScheme.HYBRID_NIGHT, new MapScene.LoadSceneCallback() {
             @Override
             public void onLoadScene(MapError mapError) {
                 if (mapError == null) {
@@ -135,29 +137,48 @@ public class HereNavigationService {
         }
     }
 
-    public boolean initialize() {
+    public boolean initialize(String accessKeyId, String accessKeySecret) {
         try {
             Logger.info("HereNavigationService", "Initializing HERE Navigation Service");
             
-            // Check if SDK is already initialized
+            // Initialize HERE SDK if not already initialized
             if (SDKNativeEngine.getSharedInstance() == null) {
-                Logger.warn("HereNavigationService", "HERE SDK not initialized. Make sure MainActivity initializes it first.");
-                Logger.warn("HereNavigationService", "This usually means authentication failed in MainActivity.java");
-                return false;
+                Logger.info("HereNavigationService", "Initializing HERE SDK with provided credentials");
+                
+                try {
+                    AuthenticationMode authenticationMode = 
+                        AuthenticationMode.withKeySecret(accessKeyId, accessKeySecret);
+                    SDKOptions options = 
+                        new SDKOptions(authenticationMode);
+                    
+                    SDKNativeEngine.makeSharedInstance(context, options);
+                    Logger.info("HereNavigationService", "✅ HERE SDK initialized successfully");
+                } catch (InstantiationErrorException e) {
+                    Logger.error("HereNavigationService", "❌ HERE SDK initialization failed: " + e.error.name(), e);
+                    return false;
+                }
+            } else {
+                Logger.info("HereNavigationService", "HERE SDK already initialized - using existing instance");
             }
             
-            Logger.info("HereNavigationService", "HERE SDK instance found - authentication appears successful");
+            // Initialize the navigation components
+            return initializeComponents();
+        } catch (Exception e) {
+            Logger.error("HereNavigationService", "Initialization failed", e);
+            return false;
+        }
+    }
+    
+    private boolean initializeComponents() {
+        try {
+            Logger.info("HereNavigationService", "Initializing HERE Navigation components");
             
             // Initialize routing engine
             try {
                 routingEngine = new RoutingEngine();
                 Logger.info("HereNavigationService", "RoutingEngine initialized");
-                
-                // Test routing engine authentication
-                Logger.info("HereNavigationService", "RoutingEngine created successfully - credentials should work for routing");
             } catch (InstantiationErrorException e) {
                 Logger.error("HereNavigationService", "Failed to initialize RoutingEngine", e);
-                Logger.warn("HereNavigationService", "This indicates authentication issues with routing services specifically");
                 return false;
             }
             
@@ -174,20 +195,16 @@ public class HereNavigationService {
             try {
                 visualNavigator = new VisualNavigator();
                 Logger.info("HereNavigationService", "VisualNavigator initialized");
-                
-                // Add navigation listeners
-                // addNavigationListeners();
-                
                 isInitialized = true;
             } catch (InstantiationErrorException e) {
                 Logger.error("HereNavigationService", "Failed to initialize VisualNavigator", e);
                 return false;
             }
             
-            Logger.info("HereNavigationService", "HERE Navigation Service initialized successfully");
+            Logger.info("HereNavigationService", "HERE Navigation Service components initialized successfully");
             return true;
         } catch (Exception e) {
-            Logger.error("HereNavigationService", "Initialization failed", e);
+            Logger.error("HereNavigationService", "Component initialization failed", e);
             return false;
         }
     }

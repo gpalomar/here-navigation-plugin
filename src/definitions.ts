@@ -1,6 +1,6 @@
 export interface HereNavigationPluginPlugin {
   echo(options: { value: string }): Promise<{ value: string }>;
-  initialize(): Promise<{ success: boolean }>;
+  initialize(options: { accessKeyId: string; accessKeySecret: string }): Promise<{ success: boolean }>;
   startNavigation(options: { lat: number; lng: number }): Promise<{ success: boolean }>;
   stopNavigation(): Promise<{ success: boolean }>;
   isNavigating(): Promise<{ isNavigating: boolean }>;
