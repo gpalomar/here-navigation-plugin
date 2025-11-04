@@ -55,7 +55,14 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':capacitor-android')
     implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
-    implementation(name: 'heresdk-navigate-android-4.24.3.0.237319', ext: 'aar')
+    
+    // HERE SDK: Users must provide this in their main application
+    // For development: place heresdk-navigate-android-4.24.3.0.237319.aar in libs/ folder
+    // The main app's implementation dependency will provide the runtime version
+    if (file('libs/heresdk-navigate-android-4.24.3.0.237319.aar').exists()) {
+        compileOnly(name: 'heresdk-navigate-android-4.24.3.0.237319', ext: 'aar')
+    }
+    
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"

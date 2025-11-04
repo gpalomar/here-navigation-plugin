@@ -9,6 +9,19 @@ npm install @routal/here-navigation
 npx cap sync
 ```
 
+## Setup
+
+**Important**: This plugin requires additional setup steps to provide the HERE SDK. See [SETUP.md](./SETUP.md) for detailed instructions.
+
+### Quick Setup Summary
+
+1. Obtain HERE SDK for Android from HERE Technologies
+2. Place `heresdk-navigate-android-4.24.3.0.237319.aar` in `android/app/libs/`
+3. Add HERE SDK dependency to your app's `build.gradle`
+4. Initialize with your HERE API keys
+
+For complete setup instructions, see [SETUP.md](./SETUP.md).
+
 ## API
 
 <docgen-index>
